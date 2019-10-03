@@ -6,7 +6,7 @@ Portunus was the ancient Roman god of keys, doors, livestock and ports. It is al
 Deploy using the provided deploymentConfig.yaml in the k8s library. 
 To move it to a different node use 
 ```
-NODE=node-1.kbutton.lab.upshift.rdu2.redhat.com && \
+NODE=<node name> && \
 oc rollout pause dc/portunus && \
 oc patch dc portunus -p '{"spec":{"template":{"spec":{"nodeSelector":{"kubernetes.io/hostname": "'$NODE'"}}}}}' && \
 oc set env dc/portunus MY_K8_NODE=$NODE  && \
