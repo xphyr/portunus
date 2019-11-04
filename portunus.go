@@ -23,8 +23,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"./portunus"
-
+	"./pkg/portunus"
 )
 var (
 	buf bytes.Buffer
