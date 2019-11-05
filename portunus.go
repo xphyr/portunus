@@ -17,76 +17,72 @@ limitations under the License.
 package main
 
 import (
+	"bytes"
 	"flag"
-	"net"
+	"fmt"
+	"log"
 	"net/http"
+	"os"
 
-	logrus "github.com/sirupsen/logrus"
+	"github.com/xphyr/portunus/pkg/portunus"
 )
 
 var (
-	log = logrus.New()
+	buf         bytes.Buffer
+	logger      = log.New(&buf, "logger ", log.Lshortfile)
+	my_hostname = os.Getenv("HOSTNAME")
+	k8_node     = getk8s()
 )
 
-func queryHandler(w http.ResponseWriter, r *http.Request) {
-	var status string
-
-	target := r.URL.Query().Get("target")
-	port := r.URL.Query().Get("port")
-	if target == "" {
-		http.Error(w, "'target' parameter must be specified", 400)
-		return
-	}
-	if port == "" {
-		http.Error(w, "'port' parameter must be specified", 400)
-		return
-	}
-	destination := target + ":" + port
-	log.Printf("Testing connection to %v", destination)
-	conn, err := net.Dial("tcp", destination)
-	if err != nil {
-		log.Println("Connection error:", err)
-		status = "Unreachable"
-	} else {
-		status = "Online"
-		conn.Close()
-	}
-	log.Println(status)
-}
 func init() {
-	log.Formatter = new(logrus.TextFormatter)
 	flag.Parse()
+	logger.SetOutput(os.Stderr)
 }
+
+func getk8s() string {
+	openshift_node := os.Getenv("MY_K8_NODE")
+	if openshift_node != "" {
+		return openshift_node
+	}
+	return ""
+}
+
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+
+	w.Write([]byte(`<html>`)) // Begin html block
+	w.Write([]byte(`<head> 
+		<title>Simple K8s Test Pod</title>
+		<style>
+		label{
+		display:inline-block;
+		width:75px;
+		}
+		form label {
+		margin: 10px;
+		}
+		form input {
+		margin: 10px;
+		}
+		</style>
+		</head><body>`)) // Head  Begin Body
+	w.Write([]byte(fmt.Sprintf("<h3>My hostname: %v</h3>", my_hostname)))
+	if k8_node != "" {
+		w.Write([]byte(fmt.Sprintf("<hr><h3>My k8s node is: %v</h3><hr>", k8_node)))
+	}
+	portunus.GetPortTesterForm(w)
+	w.Write([]byte(`<hr>`)) //Line Break
+	portunus.GetDNSTesterForm(w)
+	w.Write([]byte(`</body></html>`)) //END
+
+}
+
 func main() {
-	log.Info("Starting Portunus")
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(`<html>
-            <head>
-            <title>Portunus Port Tester</title>
-            <style>
-            label{
-            display:inline-block;
-            width:75px;
-            }
-            form label {
-            margin: 10px;
-            }
-            form input {
-            margin: 10px;
-            }
-            </style>
-            </head>
-            <body>
-            <h1>Portunus Port Tester</h1>
-            <form action="/query">
-            <label>Target:</label> <input type="text" name="target" placeholder="X.X.X.X" value="1.2.3.4"><br>
-			<label>Port:</label> <input type="text" name="port" placeholder="80" value="80"><br>
-			<input type="submit" value="Submit">
-            </form>
-            </html>`))
-	})
-	http.HandleFunc("/query", queryHandler)
+
+	logger.Printf("Starting App")
+	http.HandleFunc("/", rootHandler)
+	http.HandleFunc("/porttester", portunus.PortTestHandler)
+	http.HandleFunc("/dnstest", portunus.DNSTestHandler)
 	listenPort := ":8080"
-	log.Info("Listening on port: ", listenPort)
-	log.Fatal(http.ListenAndServe(listenPort, nil))
+	logger.Printf("Listening on port: %v", listenPort)
+	http.ListenAndServe(listenPort, nil)
 }
