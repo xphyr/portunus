@@ -23,14 +23,17 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"./pkg/portunus"
+
+	"github.com/xphyr/portunus/pkg/portunus"
 )
+
 var (
-	buf bytes.Buffer
-	logger = log.New(&buf, "logger ", log.Lshortfile)
+	buf         bytes.Buffer
+	logger      = log.New(&buf, "logger ", log.Lshortfile)
 	my_hostname = os.Getenv("HOSTNAME")
-	k8_node = getk8s()
+	k8_node     = getk8s()
 )
+
 func init() {
 	flag.Parse()
 	logger.SetOutput(os.Stderr)
@@ -69,13 +72,12 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 	portunus.GetPortTesterForm(w)
 	w.Write([]byte(`<hr>`)) //Line Break
 	portunus.GetDNSTesterForm(w)
-	w.Write([]byte(`</body></html>`))  //END
+	w.Write([]byte(`</body></html>`)) //END
 
 }
 
-
 func main() {
-	
+
 	logger.Printf("Starting App")
 	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/porttester", portunus.PortTestHandler)
