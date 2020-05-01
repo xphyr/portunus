@@ -28,10 +28,10 @@ import (
 )
 
 var (
-	buf         bytes.Buffer
-	logger      = log.New(&buf, "logger ", log.Lshortfile)
-	my_hostname = os.Getenv("HOSTNAME")
-	k8_node     = getk8s()
+	buf        bytes.Buffer
+	logger     = log.New(&buf, "logger ", log.Lshortfile)
+	myHostname = os.Getenv("HOSTNAME")
+	k8_node    = getk8s()
 )
 
 func init() {
@@ -65,7 +65,7 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		</style>
 		</head><body>`)) // Head  Begin Body
-	w.Write([]byte(fmt.Sprintf("<h3>My hostname: %v</h3>", my_hostname)))
+	w.Write([]byte(fmt.Sprintf("<h3>My hostname: %s</h3>", myHostname)))
 	if k8_node != "" {
 		w.Write([]byte(fmt.Sprintf("<hr><h3>My k8s node is: %v</h3><hr>", k8_node)))
 	}
@@ -82,6 +82,7 @@ func main() {
 	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/porttester", portunus.PortTestHandler)
 	http.HandleFunc("/dnstest", portunus.DNSTestHandler)
+	http.HandleFunc("/whatsmypod", portunus.WhatsMyPod)
 	listenPort := ":8080"
 	logger.Printf("Listening on port: %v", listenPort)
 	http.ListenAndServe(listenPort, nil)
