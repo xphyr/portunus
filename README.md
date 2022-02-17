@@ -6,6 +6,9 @@
 
 Portunus was the ancient Roman god of keys, doors, livestock and ports. It is also a small web application that will test for connectivity to host/port combinations.  
 
+## Building
+
+Portunus can be built locally, or be built inside a container image.
 
 # Using in openshift/k8s as a testing tool
 Deploy using the provided deploymentConfig.yaml in the k8s library. 
