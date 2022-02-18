@@ -47,10 +47,10 @@ jobs:
 
     - name: Podman Login
       uses: redhat-actions/podman-login@v1
-        with:
-          username: ${{ env.GHCR_REGISTRY_USER }}
-          password: ${{ env.GHCR_REGISTRY_PASSWORD }}
-          registry: ${{ env.GHCR_IMAGE_REGISTRY }}
+      with:
+        username: ${{ env.GHCR_REGISTRY_USER }}
+        password: ${{ env.GHCR_REGISTRY_PASSWORD }}
+        registry: ${{ env.GHCR_IMAGE_REGISTRY }}
 
     - name: Push To ghcr.io
       id: push-to-ghcr
