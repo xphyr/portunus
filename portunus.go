@@ -31,7 +31,7 @@ var (
 	buf        bytes.Buffer
 	logger     = log.New(&buf, "logger ", log.Lshortfile)
 	myHostname = os.Getenv("HOSTNAME")
-	k8_node    = getk8s()
+	k8Node     = getk8s()
 )
 
 func init() {
@@ -40,9 +40,9 @@ func init() {
 }
 
 func getk8s() string {
-	openshift_node := os.Getenv("MY_K8_NODE")
-	if openshift_node != "" {
-		return openshift_node
+	openshiftNode := os.Getenv("MY_K8_NODE")
+	if openshiftNode != "" {
+		return openshiftNode
 	}
 	return ""
 }
@@ -66,8 +66,8 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 		</style>
 		</head><body>`)) // Head  Begin Body
 	w.Write([]byte(fmt.Sprintf("<h3>My hostname: %s</h3>", myHostname)))
-	if k8_node != "" {
-		w.Write([]byte(fmt.Sprintf("<hr><h3>My k8s node is: %v</h3><hr>", k8_node)))
+	if k8Node != "" {
+		w.Write([]byte(fmt.Sprintf("<hr><h3>My k8s node is: %v</h3><hr>", k8Node)))
 	}
 	portunus.GetPortTesterForm(w)
 	w.Write([]byte(`<hr>`)) //Line Break

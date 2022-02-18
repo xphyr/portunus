@@ -3,8 +3,8 @@ package portunus
 import (
 	"net"
 	"net/http"
-
 )
+
 func PortTestHandler(w http.ResponseWriter, r *http.Request) {
 	target := r.URL.Query().Get("target")
 	port := r.URL.Query().Get("port")
@@ -34,7 +34,7 @@ func PortTestHandler(w http.ResponseWriter, r *http.Request) {
 		</html>`))
 	}
 }
- 
+
 func GetPortTesterForm(w http.ResponseWriter) {
 	w.Write([]byte(`<h2>Port Tester</h2>
             <form action="/porttester">

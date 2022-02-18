@@ -1,6 +1,6 @@
 # portunus
 
-[![Build Status](https://travis-ci.com/xphyr/portunus.svg?branch=master)](https://travis-ci.com/xphyr/portunus)
+[![Build Status](https://github.com/xphyr/portunus/actions/workflows/build.yml/badge.svg)](https://github.com/xphyr/portunus/actions/workflows/build.yml)
 [![Go Reportcard](https://goreportcard.com/badge/github.com/xphyr/portunus)](https://goreportcard.com/report/github.com/xphyr/portunus)
 [![Quay.io Status](https://quay.io/repository/xphyr/portunus/status)](https://quay.io/repository/xphyr/portunus)
 
