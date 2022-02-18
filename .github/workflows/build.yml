@@ -22,3 +22,16 @@ jobs:
 
     - name: Test
       run: go test -v .
+
+  container:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Buildah Action
+      uses: redhat-actions/buildah-build@v2
+      with:
+        image: quay.io/xphyr/portunus
+        tags: ${{ github.sha }}
+        containerfiles: |
+          ./Dockerfile
