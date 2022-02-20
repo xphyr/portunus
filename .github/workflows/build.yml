@@ -57,12 +57,19 @@ jobs:
         containerfiles: |
           ./Dockerfile
 
-    - name: Podman Login
+    - name: Podman Login GHCR
       uses: redhat-actions/podman-login@v1
       with:
         username: ${{ env.GHCR_REGISTRY_USER }}
         password: ${{ env.GHCR_REGISTRY_PASSWORD }}
         registry: ${{ env.GHCR_IMAGE_REGISTRY }}
+
+    - name: Podman Login Quay.io
+      uses: redhat-actions/podman-login@v1
+      with:
+        username: ${{ env.QUAY_REGISTRY_USER }}
+        password: ${{ env.QUAY_REGISTRY_PASSWORD }}
+        registry: ${{ env.QUAY_IMAGE_REGISTRY }}
 
     - name: Push To ghcr.io
       id: push-to-ghcr
@@ -70,7 +77,15 @@ jobs:
       with:
         image: ${{ steps.build-image.outputs.image }}
         tags: ${{ steps.build-image.outputs.tags }}
-        registry: ${{ env.GHCR_IMAGE_REGISTRY }}
+        registry: ${{ env.GHCR_IMAGE_REGISTRY }}/${{ env.GHCR_REGISTRY_USER }}
+
+    - name: Push To quay.io
+      id: push-to-quay
+      uses: redhat-actions/push-to-registry@v2
+      with:
+        image: ${{ steps.build-image.outputs.image }}
+        tags: ${{ steps.build-image.outputs.tags }}
+        registry: ${{ env.QUAY_IMAGE_REGISTRY }}/${{ env.QUAY_REGISTRY_USER }}
 
     - name: Print image url
-      run: echo "Image pushed to ${{ steps.push-to-ghcr.outputs.registry-paths }}"
+      run: echo "Image pushed to ${{ steps.push-to-ghcr.outputs.registry-paths }} \n ${{ steps.push-to-quay.outputs.registry-paths }}"
