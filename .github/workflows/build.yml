@@ -6,7 +6,7 @@ on:
       - "*"
 
 env:
-  REGISTRY_USER: xphyr
+  QUAY_REGISTRY_USER: xphyr
   QUAY_IMAGE_REGISTRY: quay.io
   GHCR_IMAGE_REGISTRY: ghcr.io
   GHCR_REGISTRY_USER: ${{ github.actor }}
