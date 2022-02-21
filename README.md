@@ -1,11 +1,14 @@
 # portunus
 
-[![Build Status](https://travis-ci.com/xphyr/portunus.svg?branch=master)](https://travis-ci.com/xphyr/portunus)
+[![Build Status](https://github.com/xphyr/portunus/actions/workflows/build.yml/badge.svg)](https://github.com/xphyr/portunus/actions/workflows/build.yml)
 [![Go Reportcard](https://goreportcard.com/badge/github.com/xphyr/portunus)](https://goreportcard.com/report/github.com/xphyr/portunus)
 [![Quay.io Status](https://quay.io/repository/xphyr/portunus/status)](https://quay.io/repository/xphyr/portunus)
 
 Portunus was the ancient Roman god of keys, doors, livestock and ports. It is also a small web application that will test for connectivity to host/port combinations.  
 
+## Building
+
+Portunus can be built locally, or be built inside a container image.
 
 # Using in openshift/k8s as a testing tool
 Deploy using the provided deploymentConfig.yaml in the k8s library. 

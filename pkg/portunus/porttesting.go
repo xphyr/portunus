@@ -3,8 +3,9 @@ package portunus
 import (
 	"net"
 	"net/http"
-
 )
+
+// PortTestHandler exports a http response writer that tests Port Open queries
 func PortTestHandler(w http.ResponseWriter, r *http.Request) {
 	target := r.URL.Query().Get("target")
 	port := r.URL.Query().Get("port")
@@ -34,7 +35,8 @@ func PortTestHandler(w http.ResponseWriter, r *http.Request) {
 		</html>`))
 	}
 }
- 
+
+// GetPortTesterForm creates the port test html form
 func GetPortTesterForm(w http.ResponseWriter) {
 	w.Write([]byte(`<h2>Port Tester</h2>
             <form action="/porttester">
