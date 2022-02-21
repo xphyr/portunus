@@ -52,7 +52,7 @@ jobs:
       id: build-image
       uses: redhat-actions/buildah-build@v2
       with:
-        image: ghcr.io/xphyr/portunus
+        image: portunus
         tags: latest ${{ github.sha }}
         containerfiles: |
           ./Dockerfile
