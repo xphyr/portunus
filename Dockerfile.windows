@@ -1,9 +1,15 @@
+FROM golang:nanoserver as gobuild
+COPY . /code
+WORKDIR /code
+RUN go build -o portunus.exe
+
 # Indicates that the windowsservercore image will be used as the base image.
-FROM mcr.microsoft.com/windows/servercore:ltsc2019
+# FROM mcr.microsoft.com/windows/servercore:ltsc2019
+FROM mcr.microsoft.com/windows/nanoserver:20H2
 
 RUN mkdir c:\apps
 
-ADD portunus.exe c:/apps
-
+COPY --from=gobuild /code/portunus.exe /apps/portunus.exe
+EXPOSE 8080
 # Sets a command or process that will run each time a container is run from the new image.
 CMD [ "c:/apps/portunus.exe" ]
