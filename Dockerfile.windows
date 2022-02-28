@@ -4,8 +4,7 @@ WORKDIR /code
 RUN go build -o portunus.exe
 
 # Indicates that the windowsservercore image will be used as the base image.
-# FROM mcr.microsoft.com/windows/servercore:ltsc2019
-FROM mcr.microsoft.com/windows/nanoserver:20H2
+FROM mcr.microsoft.com/windows/nanoserver:1809
 
 RUN mkdir c:\apps
 
