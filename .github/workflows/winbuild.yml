@@ -35,7 +35,7 @@ jobs:
         os: [ubuntu-latest, windows-2019]
         include:
         - os: ubuntu-latest
-          file: Dockerfile.linux
+          file: Dockerfile
           tag: quay.io/xphyr/portunus:multiarch-linux-amd64
         - os: windows-2019
           file: Dockerfile.windows
